@@ -26,3 +26,16 @@ exports.createUser = async (req, res, next) => {
     next();
   }
 };
+
+exports.findeMe = async (req, res) => {
+  const user = await User.findById(req.userId);
+  if (!user) {
+    res.status(404).json({
+      message: "No User Found",
+    });
+  }
+  res.status(200).json({
+    ...user._doc,
+    password: null,
+  });
+};

@@ -34,6 +34,7 @@ mongoose.connect(
     useNewUrlParser: true,
     useUnifiedTopology: true,
     autoCreate: true,
+    useCreateIndex: true,
   },
 );
 

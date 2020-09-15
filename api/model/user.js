@@ -67,6 +67,7 @@ const userSchema = new Schema(
   },
   {
     timestamps: true,
+    autoIndex: true,
   },
 );
 
