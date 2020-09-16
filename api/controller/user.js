@@ -17,7 +17,7 @@ exports.createUser = async (req, res, next) => {
       bcrypt.hash(req.body.password, salt, async (err, hashedPassword) => {
         const data = req.body;
         const user = await User.create({ ...data, password: hashedPassword });
-        res.status(201).json(user._doc);
+        res.status(201).json({ ...user._doc, password: null });
       });
     });
   } catch (error) {

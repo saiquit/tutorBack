@@ -35,11 +35,11 @@ mongoose.connect(
     useUnifiedTopology: true,
     autoCreate: true,
     useCreateIndex: true,
-    useFindAndModify: true,
   },
   () => {
     console.log("DB Connected");
   },
 );
+mongoose.set("debug", true);
 
 app.listen(4000, () => console.log("Started at port 4000"));

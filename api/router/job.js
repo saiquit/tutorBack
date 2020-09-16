@@ -1,44 +1,23 @@
 const router = require("express").Router();
 const Job = require("../model/job");
 const User = require("../model/user");
+const {
+  findAll,
+  findOne,
+  postJob,
+  updateJob,
+  deleteJob,
+} = require("../controller/job");
 const authMiddle = require("../middleware/auth");
 
-router.get("/", async (req, res) => {
-  try {
-    const job = await Job.find({}).populate("createdBy");
-    res.status(200).json(job);
-  } catch (error) {
-    res.status(500).json({ message: error });
-  }
-});
+router.get("/", findAll);
 
-router.get("/:id", async (req, res) => {
-  try {
-    const job = await Job.findById(req.params.id);
-    res.status(200).json(job);
-  } catch (error) {
-    res.status(500).json({ message: error });
-  }
-});
+router.get("/:id", findOne);
 
-router.post("/", authMiddle, async (req, res) => {
-  try {
-    const reqBody = req.body;
+router.post("/", authMiddle, postJob);
 
-    const createdJob = await Job.create({
-      ...reqBody,
-      createdBy: req.userId,
-    });
-    if (createdJob) {
-      User.findByIdAndUpdate(
-        { _id: req.userId },
-        { $push: { postedJobs: createdJob._id } },
-      );
-    }
-    res.status(200).json(createdJob);
-  } catch (error) {
-    res.status(500).json({ message: error });
-  }
-});
+router.put("/:id", authMiddle, updateJob);
+
+router.delete("/:id", authMiddle, deleteJob);
 
 module.exports = router;
