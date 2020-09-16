@@ -35,6 +35,10 @@ mongoose.connect(
     useUnifiedTopology: true,
     autoCreate: true,
     useCreateIndex: true,
+    useFindAndModify: true,
+  },
+  () => {
+    console.log("DB Connected");
   },
 );
 
