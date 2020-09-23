@@ -10,18 +10,18 @@ const {
 const { errorHandler } = require("../services/response");
 const {
   getAllDistrict,
-  getSingleDistrict,
+  getSingleArea,
   getAllArea,
   getAllGroups,
   getAllInstitutes,
-  getAllCategories,
+  getCategory,
   getAllCourses,
   getSingleCourse,
 } = require("../controller/static");
 
 router.get("/district", getAllDistrict);
 
-router.get("/district/:id", getSingleDistrict);
+router.get("/area/:id", getSingleArea);
 
 router.get("/area", getAllArea);
 
@@ -29,7 +29,7 @@ router.get("/group", getAllGroups);
 
 router.get("/institute", getAllInstitutes);
 
-router.get("/category", getAllCategories);
+router.get("/category/:category_name", getCategory);
 
 router.get("/course", getAllCourses);
 

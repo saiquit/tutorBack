@@ -29,7 +29,6 @@ exports.auth = async (req, res) => {
           }
           res.json({
             token: token,
-            _id: user._id,
           });
         },
       );

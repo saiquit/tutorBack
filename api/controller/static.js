@@ -17,10 +17,10 @@ exports.getAllDistrict = async (req, res) => {
   }
 };
 
-exports.getSingleDistrict = async (req, res) => {
+exports.getSingleArea = async (req, res) => {
   try {
-    const district = await District.findOne({ id: req.params.id });
-    res.status(200).json(district);
+    const area = await Area.find({ district_id: req.params.id });
+    res.status(200).json(area);
   } catch (error) {
     errorHandler(error);
   }
@@ -52,9 +52,11 @@ exports.getAllInstitutes = async (req, res) => {
     errorHandler(error);
   }
 };
-exports.getAllCategories = async (req, res) => {
+exports.getCategory = async (req, res) => {
   try {
-    const category = await Category.find({});
+    const category = await Category.findOne({
+      category_name: req.params.category_name,
+    });
     res.status(200).json(category);
   } catch (error) {
     errorHandler(error);

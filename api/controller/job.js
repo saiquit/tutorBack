@@ -27,13 +27,13 @@ exports.postJob = async (req, res) => {
       ...reqBody,
       createdBy: req.userId,
     });
+    res.status(200).json(createdJob);
     if (createdJob) {
-      User.findByIdAndUpdate(
+      return User.findByIdAndUpdate(
         { _id: req.userId },
         { $push: { postedJobs: createdJob._id } },
       );
     }
-    res.status(200).json(createdJob);
   } catch (error) {
     res.status(500).json({ message: error });
   }

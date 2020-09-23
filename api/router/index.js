@@ -8,6 +8,6 @@ const jobRouter = require("./job");
 router.use("/users", userRouter);
 router.use("/auth", authRouter);
 router.use("/statics", staticRouter);
-router.use("/job", jobRouter);
+router.use("/jobs", jobRouter);
 
 module.exports = router;
