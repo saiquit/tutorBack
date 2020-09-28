@@ -37,8 +37,8 @@ mongoose.connect(
     useCreateIndex: true,
     useFindAndModify: false,
   },
-  () => {
-    console.log("DB Connected");
+  (err) => {
+    console.log("DB Connected", err);
   },
 );
 mongoose.set("debug", true);

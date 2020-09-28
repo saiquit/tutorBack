@@ -4,14 +4,25 @@ const { errorHandler } = require("../services/response");
 
 exports.findAll = async (req, res) => {
   try {
-    const job = await Job.find({});
-    res.status(200).json(job);
+    const reqQuery = req.query;
+
+    const queryLength = Object.keys(reqQuery).length;
+    if (!queryLength) {
+      const job = await Job.find();
+      res.status(200).json(job);
+    } else {
+      const job = await Job.find({
+        ...reqQuery,
+        district: reqQuery?.district[0],
+      });
+      res.status(200).json(job);
+    }
   } catch (error) {
     res.status(500).json({ message: error });
   }
 };
 
-exports.findOne = async (req, res) => {
+exports.findOne = async (req, res, next) => {
   try {
     const job = await Job.findById(req.params.id);
     res.status(200).json(job);
