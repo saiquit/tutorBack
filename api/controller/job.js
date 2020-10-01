@@ -3,19 +3,53 @@ const User = require("../model/user");
 const { errorHandler } = require("../services/response");
 
 exports.findAll = async (req, res) => {
+  var limit = parseInt(2);
+  var skip = (parseInt(req.query.page) - 1) * parseInt(limit);
   try {
     const reqQuery = req.query;
+    delete reqQuery.page;
 
     const queryLength = Object.keys(reqQuery).length;
+
     if (!queryLength) {
-      const job = await Job.find();
-      res.status(200).json(job);
-    } else {
-      const job = await Job.find({
+      const jobs = await Job.find().limit(limit).skip(skip);
+      const count = await Job.countDocuments();
+      res.status(200).json({
+        jobs,
+        count: count,
+      });
+    } else if (reqQuery.district) {
+      const count = await Job.find({
         ...reqQuery,
         district: reqQuery?.district[0],
+      }).count();
+
+      const jobs = await Job.find({
+        ...reqQuery,
+        district: reqQuery?.district[0],
+      })
+        .limit(limit)
+        .skip(skip);
+      res.status(200).json({
+        jobs,
+        count: count,
       });
-      res.status(200).json(job);
+    } else if (!reqQuery.district) {
+      const jobs = await Job.find({
+        ...reqQuery,
+      })
+        .limit(limit)
+        .skip(skip)
+        .sort({ createdAt: "asc" });
+
+      const count = await Job.find({
+        ...reqQuery,
+        district: reqQuery?.district[0],
+      }).count();
+      res.status(200).json({
+        jobs,
+        count: count,
+      });
     }
   } catch (error) {
     res.status(500).json({ message: error });
