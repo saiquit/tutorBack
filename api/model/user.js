@@ -49,7 +49,7 @@ const userSchema = new Schema(
       medium: String,
       tutorType: [String],
       subjects: [String],
-      place: String,
+      place: [String],
     },
     personalInfo: {
       additionalInfo: String,

@@ -40,3 +40,12 @@ exports.findMe = async (req, res) => {
     postedJobs: jobs,
   });
 };
+
+exports.updateData = async (req, res) => {
+  let userId = req.userId;
+  const userData = await User.findByIdAndUpdate(userId, req.body, {
+    upsert: true,
+  });
+  res.json(userData);
+  console.log(userData);
+};
