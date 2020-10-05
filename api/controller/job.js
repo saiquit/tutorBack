@@ -3,18 +3,17 @@ const User = require("../model/user");
 const { errorHandler } = require("../services/response");
 
 exports.findAll = async (req, res) => {
-  var limit = parseInt(2);
+  var limit = parseInt(7);
   var skip = (parseInt(req.query.page) - 1) * parseInt(limit);
   try {
     const reqQuery = req.query;
     delete reqQuery.page;
 
     const queryLength = Object.keys(reqQuery).length;
-
     if (!queryLength) {
-      const jobs = await Job.find().limit(limit).skip(skip);
+      const jobs = await Job.find().select("-applied").limit(limit).skip(skip);
       const count = await Job.countDocuments();
-      res.status(200).json({
+      return res.status(200).json({
         jobs,
         count: count,
       });
@@ -30,22 +29,7 @@ exports.findAll = async (req, res) => {
       })
         .limit(limit)
         .skip(skip);
-      res.status(200).json({
-        jobs,
-        count: count,
-      });
-    } else if (!reqQuery.district) {
-      const jobs = await Job.find({
-        ...reqQuery,
-      })
-        .limit(limit)
-        .skip(skip)
-        .sort({ createdAt: "asc" });
-
-      const count = await Job.find({
-        ...reqQuery,
-        district: reqQuery?.district[0],
-      }).count();
+      delete jobs.applied;
       res.status(200).json({
         jobs,
         count: count,
@@ -86,11 +70,11 @@ exports.postJob = async (req, res) => {
 exports.updateJob = async (req, res) => {
   try {
     const reqBody = req.body;
-    const userId = req.userId;
+    const jobId = req.params.id;
     await Job.findByIdAndUpdate(
-      userId,
+      jobId,
       reqBody,
-      { new: true },
+      { upsert: true },
       (err, result) => {
         if (result) {
           res.status(202).json(result);

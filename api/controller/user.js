@@ -27,16 +27,16 @@ exports.createUser = async (req, res, next) => {
 };
 
 exports.findMe = async (req, res) => {
-  const user = await User.findById(req.userId);
+  const user = await User.findById(req.userId).select("-password");
   if (!user) {
     res.status(404).json({
       message: "No User Found",
     });
   }
   const jobs = await Job.find({ _id: { $in: user.postedJobs } });
+  delete res.password;
   res.status(200).json({
     ...user._doc,
-    password: null,
     postedJobs: jobs,
   });
 };

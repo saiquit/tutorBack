@@ -59,6 +59,12 @@ const jobSchema = new Schema(
     tutorType: {
       type: String,
     },
+    applied: [
+      {
+        applicatentId: Schema.Types.ObjectId,
+        appicationMessage: String,
+      },
+    ],
   },
   {
     timestamps: true,
