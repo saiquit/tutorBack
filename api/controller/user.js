@@ -42,10 +42,18 @@ exports.findMe = async (req, res) => {
 };
 
 exports.updateData = async (req, res) => {
-  let userId = req.userId;
-  const userData = await User.findByIdAndUpdate(userId, req.body, {
-    upsert: true,
-  });
-  res.json(userData);
-  console.log(userData);
+  try {
+    let userId = req.userId;
+    if (userId !== req.params.id) {
+      return res.status(401).json({
+        message: "Not Authorize",
+      });
+    }
+    const userData = await User.findByIdAndUpdate(userId, req.body, {
+      upsert: true,
+    });
+    res.json(userData);
+  } catch (error) {
+    console.log(error);
+  }
 };

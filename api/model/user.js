@@ -22,8 +22,10 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      default: "user",
       required: true,
+    },
+    phone: {
+      type: String,
     },
     picture: {
       type: String,
@@ -33,15 +35,17 @@ const userSchema = new Schema(
       type: [Schema.Types.ObjectId],
       ref: "Job",
     },
-    educationInfo: {
-      curriculum: String,
-      degreeTitle: String,
-      group: String,
-      idCard: Number,
-      instituteName: String,
-      studyLabel: String,
-      yearOfPassing: Number,
-    },
+    educationInfo: [
+      {
+        curriculum: String,
+        degreeTitle: String,
+        group: String,
+        idCard: Number,
+        instituteName: String,
+        studyLabel: String,
+        yearOfPassing: Number,
+      },
+    ],
     availability: {
       area: String,
       class: [String],

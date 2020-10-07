@@ -6,6 +6,6 @@ const { createUser, findMe, updateData } = require("../controller/user");
 
 router.post("/", createUser);
 router.get("/me", authMiddle, findMe);
-router.post("/update", authMiddle, updateData);
+router.put("/:id", authMiddle, updateData);
 
 module.exports = router;
